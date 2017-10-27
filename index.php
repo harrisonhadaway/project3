@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   	<link rel="stylesheet" href="/app/style.css">
   	<script src="https://use.fontawesome.com/14f1f2c704.js"></script>
-  	 <link rel="stylesheet" href="style.css">
-  	 <link href="https://fonts.googleapis.com/css?family=Cormorant" rel="stylesheet">
+  	<link rel="stylesheet" href="style.css">
+  	<link href="https://fonts.googleapis.com/css?family=Cormorant" rel="stylesheet">
 
 </head>
 
@@ -19,37 +19,11 @@
 	</div>
 
 	<h3 class="text-center mb-3">Welcome to Team Arrow</h3>
+
 	<hr>
 
-<?php
-	function getDb() {
-        $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
-        if(!$db){
-        	echo "Error on connect!\n";
-        	exit;
-        }
-        return $db;
-    }
-       //Make a request.
-    function getInfo() {
-        $request = pg_query(getDb(), "SELECT * FROM heroes");
-        // Return a fetch to use the data.
-        return pg_fetch_all($request);
-    }
-        //print_r(getInfo());
-
-?>
-
-<!-- <ul class="list-unstyled">
-  			<li class="media">
-    			<img class="mr-3" src="..." alt="Generic placeholder image">
-   				 <div class="media-body">
-      				<h5 class="mt-0 mb-1">List-based media object</h5>
-      					Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-    			</div>
-
-  			</li> -->
  	<ul class="list-unstyled ml-5">
+
 <?php 
 
 	foreach (getInfo() as $heroes) {
@@ -57,7 +31,7 @@
 		echo '<li class="media">';
 		echo '<img class="media-object img-responsive" src="' . $heroes['image_url'] . '" alt="Generic placeholder image" width:64px height:64px>';
 		echo '<div class="media-body ml-4">';
-		echo '<h3 class="mt-0 mb-1">' . $heroes['name'] . '</h3>';
+		echo '<h3 class="mt-0 mb-1"><a href="profile_page.php?id=' . urlencode($heroes['name']) . '"">' . $heroes['name'] . '</a></h3>';
 		echo '<p>' . $heroes['about_me'] . '</p>';
 		echo '</div>';
 		echo '</li>';
@@ -65,6 +39,26 @@
 	} 
 ?>
 	</ul>
+
+
+<?php
+	function getDb() {
+	    $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
+	    if(!$db){
+	    	echo "Error on connect!\n";
+	    	exit;
+	    }
+	    return $db;
+	}
+	   //Make a request.
+	function getInfo() {
+	    $request = pg_query(getDb(), "SELECT * FROM heroes");
+	    // Return a fetch to use the data.
+	    return pg_fetch_all($request);
+	}
+	    //print_r(getInfo());
+
+?>
 
 <?php //connection for the end of development 
 	// function getDb() {
