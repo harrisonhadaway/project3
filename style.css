@@ -1,0 +1,12 @@
+img {
+	max-height: 300px;
+	width: auto;
+}
+
+body {
+	background-color: #D3d3d3;
+	font-family: 'Cormorant', serif;
+}
+h5 {
+	font-weight: bold;
+}
