@@ -24,18 +24,19 @@
 
 	<ul class="list-unstyled ml-5">
 <?php 
-	foreach (getInfo() as $heroes) {	
-		echo '<li class="media">';
-		echo '<img class="media-object img-responsive" src="' . $heroes['image_url'] . '" alt="Generic placeholder image" width:64px height:64px>';
-		echo '<div class="media-body ml-4">';
-		echo '<h3 class="mt-0 mb-1"><a href="profile_page.php?id=' . urlencode($heroes['name']) . '"">' . $heroes['name'] . '</a></h3>';
-		echo '<p>' . $heroes['about_me'] . '</p>';
-		echo '</div>';
-		echo '</li>';
-		echo '<br>';
-	} 
+		foreach (getInfo() as $heroes) {	
+			echo '<li class="media">';
+			echo '<img class="media-object img-responsive" src="' . $heroes['image_url'] . '" alt="Generic placeholder image" width:64px height:64px>';
+			echo '<div class="media-body ml-4">';
+			echo '<h3 class="mt-0 mb-1"><a href="profile_page.php?id=' . urlencode($heroes['name']) . '"">' . $heroes['name'] . '</a></h3>';
+			echo '<p>' . $heroes['about_me'] . '</p>';
+			echo '</div>';
+			echo '</li>';
+			echo '<br>';
+		} 
 ?>
 	</ul>
+	
 <?php
 
 	function getDb() {
@@ -69,9 +70,6 @@
 	    $request = pg_query(getDb(), "SELECT * FROM heroes");
 	    return pg_fetch_all($request);
 	}
-?>
-
-
 ?>
 
 </body>
