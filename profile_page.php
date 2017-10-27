@@ -42,20 +42,36 @@
     getInfo($safeId);
   	}
 
-	function getDb() {
-	    $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
-	    if(!$db){
-	    	echo "Error on connect!\n";
-	    	exit;
-	    }
-	    return $db;
-	}
-
 	function getInfo($name) {
 		$sql = "SELECT * FROM heroes WHERE name='" . $name . "'";
 	    $request = pg_query(getDb(), $sql);
 	    return pg_fetch_all($request);
 	}
+
+	function getDb() {
+
+        if(file_exists('.env')) {
+            require __DIR__ . '/vendor/autoload.php';
+            $dotenv = new Dotenv\Dotenv(__DIR__);
+            $dotenv->load();
+        }
+        
+        $url = parse_url(getenv("DATABASE_URL"));
+
+        $db_port = $url['port'];
+        $db_host = $url['host'];
+        $db_user = $url['user'];
+        $db_pass = $url['pass'];
+        $db_name = substr($url['path'], 1);
+
+        $db = pg_connect(
+            "host=" . $db_host .
+            " port=" . $db_port .
+            " dbname=" . $db_name .
+            " user=" . $db_user .
+            " password=" . $db_pass);
+        return $db;
+    }
 ?>
 </body>
 </html>

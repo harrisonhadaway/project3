@@ -37,14 +37,6 @@
 ?>
 	</ul>
 <?php
-	// function getDb() {
-	//     $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
-	//     if(!$db){
-	//     	echo "Error on connect!\n";
-	//     	exit;
-	//     }
-	//     return $db;
-	// }
 
 	function getDb() {
 
@@ -56,8 +48,6 @@
         }
         
         $url = parse_url(getenv("DATABASE_URL"));
-
-        //var_dump($url);
 
         $db_port = $url['port'];
         $db_host = $url['host'];
@@ -74,7 +64,7 @@
         return $db;
 
     }
-	
+
 	function getInfo() {
 	    $request = pg_query(getDb(), "SELECT * FROM heroes");
 	    return pg_fetch_all($request);
