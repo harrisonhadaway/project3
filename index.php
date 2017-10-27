@@ -13,7 +13,6 @@
 </head>
 
 <body class="container">
-
 	<div class="text-center img-responsive">
 		<img src="https://www.firstcomicsnews.com/wp-content/uploads/2016/09/Arrow-Logo-600x257.png">
 	</div>
@@ -22,12 +21,10 @@
 
 	<hr>
 
- 	<ul class="list-unstyled ml-5">
 
+	<ul class="list-unstyled ml-5">
 <?php 
-
-	foreach (getInfo() as $heroes) {
-		
+	foreach (getInfo() as $heroes) {	
 		echo '<li class="media">';
 		echo '<img class="media-object img-responsive" src="' . $heroes['image_url'] . '" alt="Generic placeholder image" width:64px height:64px>';
 		echo '<div class="media-body ml-4">';
@@ -39,49 +36,52 @@
 	} 
 ?>
 	</ul>
-
-
 <?php
+	// function getDb() {
+	//     $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
+	//     if(!$db){
+	//     	echo "Error on connect!\n";
+	//     	exit;
+	//     }
+	//     return $db;
+	// }
+
 	function getDb() {
-	    $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
-	    if(!$db){
-	    	echo "Error on connect!\n";
-	    	exit;
-	    }
-	    return $db;
-	}
-	   //Make a request.
+
+
+        if(file_exists('.env')) {
+            require __DIR__ . '/vendor/autoload.php';
+            $dotenv = new Dotenv\Dotenv(__DIR__);
+            $dotenv->load();
+        }
+        
+        $url = parse_url(getenv("DATABASE_URL"));
+
+        //var_dump($url);
+
+        $db_port = $url['port'];
+        $db_host = $url['host'];
+        $db_user = $url['user'];
+        $db_pass = $url['pass'];
+        $db_name = substr($url['path'], 1);
+
+        $db = pg_connect(
+            "host=" . $db_host .
+            " port=" . $db_port .
+            " dbname=" . $db_name .
+            " user=" . $db_user .
+            " password=" . $db_pass);
+        return $db;
+
+    }
+	
 	function getInfo() {
 	    $request = pg_query(getDb(), "SELECT * FROM heroes");
-	    // Return a fetch to use the data.
 	    return pg_fetch_all($request);
 	}
-	    //print_r(getInfo());
-
 ?>
 
-<?php //connection for the end of development 
-	// function getDb() {
-	//     if (file_exists('.env')) {
-	//       require __DIR__ . '/vendor/autoload.php';
-	//       $dotenv = new Dotenv\Dotenv(__DIR__);
-	//       $dotenv->load();
-	//     }
-	//     $url = parse_url(getenv("DATABASE_URL"));
-	//      var_dump($url);
-	//     $db_port = $url['port'];
-	//     $db_host = $url['host'];
-	//     $db_user = $url['user'];
-	//     $db_pass = $url['pass'];
-	//     $db_name = substr($url['path'], 1);
-	//     $db = pg_connect(
-	//       "host=" . $db_host .
-	//       " port=" . $db_port .
-	//       " dbname=" . $db_name .
-	//       " user=" . $db_user .
-	//       " password=" . $db_pass);
-	//     return $db;
-	//   }
+
 ?>
 
 </body>

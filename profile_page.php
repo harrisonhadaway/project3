@@ -18,22 +18,17 @@
 	<div class="text-center img-responsive">
 		<img src="https://www.firstcomicsnews.com/wp-content/uploads/2016/09/Arrow-Logo-600x257.png">
 	</div>
-	<?php
-	$name = urldecode($_GET['id']);
-	?>
 
 	<h2 class="text-center mb-3">Team Arrow Database</h2>
 	
 	<hr>
 
-	<?php
-	foreach (getInfo($name) as $hero){
-		
-		//echo $hero['about_me'];
-		//echo $hero['biography'];
+<?php
 	
-		echo '<div class="container">';
-  
+	$name = urldecode($_GET['id']);
+
+	foreach (getInfo($name) as $hero){
+		echo '<div class="container ml-2 mr-2">';
 		echo '<img class="img-responsive" src="' . $hero['image_url'] . '" alt="placeholder image" style="width:auto">';
 		echo '<h1>' . $hero['name'] . '</h1>';
 		echo '<p class="title">' . $hero['about_me'] . '</p>';
@@ -42,16 +37,10 @@
 		echo '</div>';
 	}
 
-	?>
-
-
-<?php
 	if (isset($_GET['id'])) {
     $safeId = htmlentities($_GET['id']);
     getInfo($safeId);
   	}
-
-
 
 	function getDb() {
 	    $db = pg_connect("host=localhost port=5432 dbname=project3 user=greenarrow password=arrowarrowarrow");
@@ -61,25 +50,12 @@
 	    }
 	    return $db;
 	}
-	   //Make a request.
+
 	function getInfo($name) {
-		//echo $name;
 		$sql = "SELECT * FROM heroes WHERE name='" . $name . "'";
-		//echo $sql;
 	    $request = pg_query(getDb(), $sql);
-	     //Return a fetch to use the data.
 	    return pg_fetch_all($request);
 	}
-		//(getInfo($name));
-	   //  $everybody = (getInfo());
-	   //  echo $name;
-	  	// echo($everybody[0]['about_me']);
-
-	   
-	
-	 
 ?>
-
-
 </body>
 </html>
